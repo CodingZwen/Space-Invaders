@@ -47,7 +47,8 @@ void EntityHandler::popEnemy(sf::Vector2f spawnPos,  float steptime,  float time
 
 
 	enemys.push_back(new Enemy(ptrAssetManager->GetTexture("enemy1"), sf::Vector2f(spawnPos.x, spawnPos.y),
-		sf::FloatRect(0, 0, ptrWindow->getSize().x, ptrWindow->getSize().y), steptime, timeforspeedup));
+		sf::FloatRect(0, 0, ptrWindow->getSize().x, ptrWindow->getSize().y),
+		sf::Color::Magenta,steptime, timeforspeedup));
 }
 
 void EntityHandler::popEnemyRows(sf::Vector2f startPos, unsigned short AmountPerRow, unsigned short rows)
@@ -79,11 +80,14 @@ void EntityHandler::draw(sf::RenderTarget & target)
 
 	terrain->draw(target);
 	
+	sfx.draw(target);
+
 }
 
 void EntityHandler::update(sf::Time elapsed)
 {
 
+	sfx.update(elapsed);
 	enemyRoundTime += elapsed.asSeconds();
 
 
@@ -110,21 +114,22 @@ void EntityHandler::updateEnemys(sf::Time elapsed)
 		enemyBulletTimer = enemyBulletTimer.Zero;
 	}
 
+	bool oof = false;
 	
 	for (auto& e : enemys)
 	{
-
 		e->update(elapsed);
 		
-
 		if (e->checkForScreenBounds())
 		{
-	
-			changeDirectionAllEnemys();
+
+			oof = true;
 			
 		}
 			
 	}
+
+	if(oof)changeDirectionAllEnemys();
 	
 }
 
@@ -139,6 +144,10 @@ void EntityHandler::checkCollsionsBulletswithEnemys()
 			{
 				j->kill();
 				i.kill();
+				sfx.getParticles()->spawnParticleExplosion(
+				i.shape.getPosition()
+				,j->getSprite().getColor());
+				
 				
 			}
 		}
@@ -156,13 +165,17 @@ void EntityHandler::checkCollsionsBulletswithEnemys()
 void EntityHandler::updateBullets(sf::Time elapsed)
 {
 
-	for (int i = 0; i < bullets.size();)
+	for (unsigned int i = 0; i < bullets.size();)
 	{
 		bullets[i].update(elapsed);
 		if (!bullets[i].isAlive())
 		{
+			/*sfx.getParticles()->spawnParticleExplosion(
+				bullets[i].shape.getPosition());*/
+
 			bullets.erase(bullets.begin() + i);
-			printf("kulgel gelöscht\n");
+		
+		
 		}
 		else i++;
 	}
@@ -177,7 +190,7 @@ void EntityHandler::checkforNewEnemys()
 		if (currentLevel <= MAXLEVEL)
 		{
 			currentLevel++;
-			popEnemyRows(sf::Vector2f(40, 40), 10, 5);
+			popEnemyRows(sf::Vector2f(40.f, 40.f), 10.f, 5.f);
 		}
 
 	}
@@ -194,7 +207,7 @@ void EntityHandler::pushEnemybullet()
 		
 		if (enemys[i]->getMovementptr()->getGlobalBounds().intersects(collRect))
 		{
-			printf("gegner vor gegner der schiessen wollten\n");
+			
 			return;
 		}
 		
@@ -241,7 +254,7 @@ void EntityHandler::changeDirectionAllEnemys()
 	for (auto& e : enemys)
 	{
 		e->getMovementptr()->setOldPosition();
-		e->StepDown();
+		e->getMovementptr()->StepDown();
 		e->changeDirection();
 		
 		

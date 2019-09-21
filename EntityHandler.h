@@ -7,13 +7,14 @@
 #include "Quadtree.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "SpecialEffects.h"
 
 
 
 
 class EntityHandler
 {
-	const int MAXLEVEL = 16;
+	const int unsigned MAXLEVEL = 16;
 	unsigned int currentLevel = 1;
 	
 	float LevelReduceTime = 20.f;
@@ -37,6 +38,7 @@ class EntityHandler
 	std::vector<Enemy*> enemys;
 
 	Player *ptrPlayer;
+	SpecialEffects sfx;
 
 public:
 	EntityHandler(AssetManager &am,SoundHandler &sh, Player *ptrPlayer, sf::RenderWindow *ptrWindow);

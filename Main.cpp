@@ -49,7 +49,7 @@ int main(int argc, TCHAR *argv[]) {
 	
 
 	//Game g(sf::Vector2i(480,320),40);
-	Game g(sf::Vector2i(1280, 768), 99);
+	Game g(sf::Vector2i(1280, 768), 98);
 
 	while (g.isRunning())
 	{

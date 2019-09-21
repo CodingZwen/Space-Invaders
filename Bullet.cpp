@@ -26,8 +26,8 @@ Bullet::Bullet(const sf::Vector2f &spawnPos, Direction dir,  float dieTime, sf::
 
 	shape.setPosition(spawnPos);
 	shape.setFillColor(sf::Color::Green);
-	shape.setSize(sf::Vector2f(sizex, sizey));
-	shape.setOrigin(sizex / 2, sizey / 2);
+	shape.setSize(sf::Vector2f(static_cast<float>(sizex),static_cast<float>( sizey)));
+	shape.setOrigin(sizex / 2.f, sizey / 2.f);
 
 
 }

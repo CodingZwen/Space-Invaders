@@ -75,6 +75,7 @@ public:
 	void moveWithoutAcceleration(const sf::Vector2f velo);
 	void pushToRight(float factor=0.75f);
 	void pushToLeft(float factor = 0.75f);
+	void StepDown();
 
 	void moveRandom();
 

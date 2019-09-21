@@ -5,7 +5,8 @@
 
 
 Enemy::Enemy(const sf::Texture & enemySheet, sf::Vector2f spawnPos,
-	sf::FloatRect enemyArea,  float stepTime,
+	sf::FloatRect enemyArea, sf::Color c,
+	float stepTime,
 	float timetoreducesteps)
 {
 	animation.init(enemySheet, 0, 0, 12, 10, 2, 1);
@@ -18,6 +19,8 @@ Enemy::Enemy(const sf::Texture & enemySheet, sf::Vector2f spawnPos,
 	Bdirection = 0;
 
 	timeToReduceSteps = timetoreducesteps;
+
+	animation.setColor(c);
 	
 }
 
@@ -25,13 +28,7 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::StepDown()
-{
-	movementComponent->moveWithoutAcceleration(sf::Vector2f(0,
-		movementComponent->getGlobalBounds().height));
-	
-	
-}
+
 
 void Enemy::reduceStepTime()
 {
@@ -44,8 +41,6 @@ void Enemy::update(sf::Time elapsed)
 
 	stepTimeBuffer += elapsed.asSeconds();
 	livedTime += elapsed.asSeconds();
-
-
 
 	//simulates the input from the enemy
 	if (stepTimeBuffer > steptime)
@@ -69,8 +64,6 @@ void Enemy::update(sf::Time elapsed)
 	animation.update(elapsed);
 
 
-
-
 }
 
 void Enemy::draw(sf::RenderTarget & target)
@@ -78,12 +71,15 @@ void Enemy::draw(sf::RenderTarget & target)
 	animation.draw(target);
 }
 
-void Enemy::handleEnemyArea()
+
+
+
+void Enemy::changeDirection()
 {
+	
+		stepTimeBuffer = 64.f;
+		Bdirection = !Bdirection; 
 }
-
-
-
 
 void Enemy::setTimeforReduceSteps(float reduceTime)
 {if(reduceTime>1)

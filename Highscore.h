@@ -88,6 +88,9 @@ public:
 
 	std::vector<unsigned char> getIntasBytes(unsigned int _Highscore);
 	std::pair<std::string, unsigned int> getHighscoreWithname(std::string highscorestring);
+	std::pair<std::string, unsigned int> getMaxscoreWithname();
+
+	
 	void printAllHighscores();
 	//the string is  also be cuttet in this function
 	//but its copy

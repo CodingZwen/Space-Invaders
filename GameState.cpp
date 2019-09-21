@@ -19,17 +19,12 @@ GameState::GameState(sf::RenderWindow *ptrWindow,   AssetManager &AM, SoundHandl
 	
 	eh = std::make_shared<EntityHandler>(AM, SH, player, ptrWindow );
 
-	txtCurrentPoints.setFont(*AM.ptr_GetFont("font"));
-	txtCurrentPoints.setCharacterSize(20.f);
-	txtCurrentPoints.setFillColor(sf::Color::White);
-	txtCurrentPoints.setPosition(sf::Vector2f(10, 10));
-
+	gui.init(*AM.ptr_GetFont("font"), player,0," ");	
 	eh->popEnemyRows(sf::Vector2f(40, 40), 10, 5);
 
-	
 
 }
-
+//unit testin, automatic testing
 
 GameState::~GameState()
 {
@@ -55,9 +50,28 @@ void GameState::HandleEvents(Game & game)
 				game.changeState(Game::GameInstances::Startmenuestate);
 			}
 
-			if (e.key.code == sf::Keyboard::Delete) {
-
 			
+
+			if (e.key.code == sf::Keyboard::F1) {
+
+				//create highscores binary 
+				hs.saveHighscoresinFile();
+
+			}
+			if (e.key.code == sf::Keyboard::F2) {
+
+				//create highscores binary 
+				hs.loadHighscoresFromFile("highscores.bin");
+				std::pair<std::string,unsigned int> goodplayer = hs.getMaxscoreWithname();
+				std::cout << "Spielername mit höchstens score: " << goodplayer.first << ' ';
+				std::cout << "Mit dem Score: " << goodplayer.second << '\n';
+
+			}
+
+			if (e.key.code == sf::Keyboard::F3) {
+
+				hs.printAllHighscores();
+
 			}
 
 
@@ -66,8 +80,10 @@ void GameState::HandleEvents(Game & game)
 
 				eh->popPlayerBullet();
 				eh->pushEnemybullet();
-			
+				unsigned int random = std::rand() % 9999 + 10;
 				
+				if(random >5000)hs.pushHighscore(random, "megamen");
+				else hs.pushHighscore(random, "Sven");
 			}
 		}
 
@@ -79,10 +95,7 @@ void GameState::HandleEvents(Game & game)
 
 void GameState::Update(Game & game)
 {
-	std::string s= "Highscore: ";
-	s += std::to_string(player->getPoints());
-	txtCurrentPoints.setString(s);
-
+	gui.update(game.frameDeltaTime);
 
 	eh->update(game.frameDeltaTime);
 	
@@ -94,7 +107,7 @@ void GameState::Draw(Game & game)
 	eh->draw(game.window);
 	player->draw(game.window);
 
-	game.window.draw(txtCurrentPoints);
+	
 
 
 	if (player->isAlive())
@@ -107,11 +120,11 @@ void GameState::Draw(Game & game)
 	}
 	else {
 		sprPlayerlives = player->getSprite();
-		sprPlayerlives.setPosition(sf::Vector2f(40, game.window.getSize().y - 20));
+		sprPlayerlives.setPosition(sf::Vector2f(40.f, (game.window.getSize().y - 20.f)));
 		game.window.draw(sprPlayerlives);
 	}
 
-
+	gui.draw(game.window);
 }
 
 void GameState::updatePlayer(sf::Event e,sf::Time elapsed,bool withAcceleration)

@@ -10,7 +10,6 @@ protected :
 
 	float livedTime;
 	float timeToDie;
-
 	sf::FloatRect screenBounds;
 
 	Animation animation;

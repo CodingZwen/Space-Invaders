@@ -6,6 +6,7 @@ DestructibleTerrain::DestructibleTerrain(sf::RenderWindow *ptrWindow)
 {
 	this->ptrWindow = ptrWindow;
 	pushWall(4);
+	//pushCheaperWall(4,10);
 
 	
 }
@@ -63,11 +64,77 @@ void DestructibleTerrain::pushWall(unsigned short count)
 	}
 }
 
+void DestructibleTerrain::pushCheaperWall(unsigned short count,float sizePerBlock)
+{
+	short amount = count;
+
+	
+	std::vector<sf::RectangleShape> wall;
+	sf::Vector2f spawnPosition = sf::Vector2f(100, ptrWindow->getSize().y - (ptrWindow->getSize().y / 3));
+	sf::RectangleShape rect;
+	int blocks = 30;
+	float gapBetwenWalls = 300;
+	
+
+
+	for (int i = 0; i < blocks; i++) {
+
+
+		int tu = i % 10; //sobald i zahl erreicht wird von vorne gemalt
+		int tv = i / 10; //sobald i zahl erreicht wird ein schritt runter weiter gemalt
+
+		sf::Vector2f finalPos = sf::Vector2f(static_cast<float>(spawnPosition.x +
+			(tu* sizePerBlock)),
+			static_cast<float>(spawnPosition.y + (tv* sizePerBlock)));
+		rect.setOutlineThickness(1.f);
+		rect.setOutlineColor(sf::Color::Magenta);
+		rect.setPosition(finalPos);
+		rect.setFillColor(sf::Color::Green);
+		rect.setSize(sf::Vector2f(sizePerBlock, sizePerBlock));
+
+		wall.push_back(rect);
+
+		/*printf("tu: %d an pos gesetzt: x: %f y: %f\n",tu, vertex->position.x+tu, vertex->position.y+tv);
+		printf("ohne tu x: %f y: %f\n", vertex->position.x , vertex->position.y );
+*/
+	}
+	cheaperWalls.push_back(wall);
+
+	while (--amount > 0)
+	{
+		std::vector<sf::RectangleShape> rectBuffer;
+
+		for (int i = 0; i < blocks; i++) {
+
+
+			
+			wall[i].setPosition((wall[i].getPosition().x+gapBetwenWalls),
+				wall[i].getPosition().y);
+
+			rectBuffer.push_back(wall[i]);
+			/*printf("tu: %d an pos gesetzt: x: %f y: %f\n",tu, vertex->position.x+tu, vertex->position.y+tv);
+			printf("ohne tu x: %f y: %f\n", vertex->position.x , vertex->position.y );
+	*/
+		}
+
+		cheaperWalls.push_back(rectBuffer);
+		std::cout << "bloecke reingemacht: " << rectBuffer.size() << std::endl;
+	}
+}
+
 void DestructibleTerrain::draw(sf::RenderTarget & target)
 {
-	//target.draw(m_vertices);
+
 	for (const auto &i : walls)
 		target.draw(i);
+
+	for (auto &i : cheaperWalls)
+	{
+		for (auto &j : i)
+		{
+			target.draw(j);
+		}
+	}
 
 }
 

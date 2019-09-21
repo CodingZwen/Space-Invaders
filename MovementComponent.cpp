@@ -64,7 +64,7 @@ const bool MovementComponent::getStates(const short unsigned state)
 		break;
 	case 5:
 	
-		if (!(this->velocity.x + this->velocity.y) > 0) //wenn nichtb bewgt und letzter state hoch gehen war dann ist		
+		if (this->velocity.x + this->velocity.y == 0) //wenn nichtb bewgt und letzter state hoch gehen war dann ist		
 		{
 			
 			return true;
@@ -165,8 +165,8 @@ void MovementComponent::move(const float dir_x, const float dir_y, const float &
 	//Accelaration -> beschleunigung
 	
 
-	this->velocity.x += this->acceleration*dir_x;
-	this->velocity.y += this->acceleration*dir_y;
+	this->velocity.x += this->acceleration*dir_x*dt;
+	this->velocity.y += this->acceleration*dir_y*dt;
 
 
 
@@ -203,6 +203,11 @@ void MovementComponent::pushToRight(float factor)
 void MovementComponent::pushToLeft(float factor)
 {
 	velocity.x = -maxVelocity * factor;
+}
+
+void MovementComponent::StepDown()
+{
+moveWithoutAcceleration(sf::Vector2f(0,getGlobalBounds().height));
 }
 
 //mike litoris

@@ -6,12 +6,14 @@
 #include "AssetManager.h"
 #include "Enemy.h"
 #include "EntityHandler.h"
+#include "Highscore.h"
+#include "Gui.h"
 class GameState : public State 
 {
 	unsigned int playerLives = 3;
 	sf::Sprite sprPlayerlives;
 	std::shared_ptr<EntityHandler> eh;
-	std::shared_ptr<Enemy> gegner1;
+	
 
 	Player *player;
 	sf::Texture playertex;
@@ -21,7 +23,8 @@ class GameState : public State
 
 	sf::View view;
 
-	sf::Text txtCurrentPoints;
+	Gui gui;
+	Highscore hs;
 
 public:
 	GameState(sf::RenderWindow *ptrWindow,  AssetManager &AM, SoundHandler &SH);

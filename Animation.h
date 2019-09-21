@@ -37,6 +37,7 @@ public:
 	void draw(sf::RenderTarget &window);
 	void setFrames(unsigned int frames);
 	void setRows(unsigned int _rows);
+	void setColor(sf::Color c);
 
 	sf::Vector2f getPosition();
 	void setPosition(sf::Vector2f newPosition);

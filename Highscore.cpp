@@ -268,6 +268,7 @@ void Highscore::printInttoBytes(const unsigned int  &i)
 	std::cout << '\n';
 }
 
+//highscorestring comes from the vector, every string should have 34 bytes, 30 for name and 4 for uint score, kinda not safe
 std::pair<std::string, unsigned int> Highscore::getHighscoreWithname(std::string highscorestring)
 {
 
@@ -304,6 +305,28 @@ std::pair<std::string, unsigned int> Highscore::getHighscoreWithname(std::string
 	pairHighscore.second = static_cast<unsigned int>(score);
 
 	return pairHighscore;
+}
+
+std::pair<std::string, unsigned int> Highscore::getMaxscoreWithname()
+{
+
+	unsigned int highscore = 0;
+	std::string playerwithhighestscore = "nohighscore";
+	for (auto &i : Highscores)
+	{
+		std::string currentHighscore = i;
+		unsigned int playerhighscore = getHighscoreWithname(i).second;
+		std::string playername = getHighscoreWithname(i).first;
+
+		if (playerhighscore > highscore)
+		{
+			highscore = playerhighscore;
+			playerwithhighestscore = playername;
+		}
+
+	}
+
+	return std::make_pair(playerwithhighestscore, highscore);
 }
 
 void Highscore::printAllHighscores()

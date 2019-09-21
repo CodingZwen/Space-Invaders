@@ -9,6 +9,7 @@ class DestructibleTerrain
 
 	sf::RenderWindow *ptrWindow;
 	std::vector<sf::VertexArray> walls;
+	std::vector<std::vector<sf::RectangleShape>> cheaperWalls;
 
 
 
@@ -21,6 +22,7 @@ public:
 
 
 	void pushWall(unsigned short count);
+	void pushCheaperWall(unsigned short count, float sizePerBlock);
 	void draw(sf::RenderTarget &target);
 	void update(sf::Time elapsed);
 	void checkCollide(sf::FloatRect collRect,sf::VertexArray &vertexarray);

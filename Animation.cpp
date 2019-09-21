@@ -102,6 +102,11 @@ void Animation::setRows(unsigned int _rows)
 	this->rows = _rows;
 }
 
+void Animation::setColor(sf::Color c)
+{
+	sprite.setColor(c);
+}
+
 sf::Vector2f Animation::getPosition()
 {
 	return sprite.getPosition();
